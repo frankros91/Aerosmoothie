@@ -1,11 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { TagCloud } from 'react-tagcloud';
+
 
 const Wordcloud = ({ data }) => {
     console.log('wordcloud data');
     console.log(data)
     return (
-        <div> I am a wordcloud </div>
+        <TagCloud
+        minSize={12}
+        maxSize={35}
+        tags={data}
+        onClick={tag => alert(`'${tag.value}' was selected!`)}
+      />
     )
 }
 Wordcloud.defaultProps = {

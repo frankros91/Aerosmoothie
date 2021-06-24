@@ -1,7 +1,11 @@
 import './App.css';
 import Wordcloud from './components/Wordcloud';
+import Radar from './components/Radar';
+import { useSpotifyImplicitGrant } from './hooks';
 
 function App() {
+  const accessToken = useSpotifyImplicitGrant()
+  if (!accessToken) return null
   return (
     <div className="App">
       <h1>Aerosmoothie</h1>
@@ -13,7 +17,8 @@ function App() {
         alt="Smoothie"
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
-      <Wordcloud />
+      <Wordcloud/>
+      <Radar/>
     </div>
   );
 }

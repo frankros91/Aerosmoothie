@@ -1,5 +1,6 @@
 import './App.css';
 import Wordcloud from './components/Wordcloud';
+import Radar from './components/Radar'
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         alt="Smoothie"
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
-      <Wordcloud />
+      <Wordcloud/>
+      <Radar/>
     </div>
   );
 }

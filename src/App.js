@@ -1,8 +1,11 @@
 import './App.css';
 import Wordcloud from './components/Wordcloud';
-import Radar from './components/Radar'
+import Radar from './components/Radar';
+import { useSpotifyImplicitGrant } from './hooks';
 
 function App() {
+  const accessToken = useSpotifyImplicitGrant()
+  if (!accessToken) return null
   return (
     <div className="App">
       <h1>Aerosmoothie</h1>

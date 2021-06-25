@@ -1,18 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { TagCloud } from 'react-tagcloud';
+import randomColor from "randomcolor";
 
 
 const Wordcloud = ({ data }) => {
     console.log('wordcloud data');
     console.log(data)
     return (
-        <TagCloud
-        minSize={12}
-        maxSize={35}
-        tags={data}
-        onClick={tag => alert(`'${tag.value}' was selected!`)}
-      />
+        <div>
+        {
+            data.map(obj => 
+                <p style={{color: randomColor(), fontSize: obj.count}}>{obj.value}</p>
+                )
+        }
+        </div>
     )
 }
 Wordcloud.defaultProps = {

@@ -57,7 +57,6 @@ class Spotify {
             'instrumentalness',
             'liveness',
             'loudness',
-            'speechiness',
             'valence'
         ]
         let featureList = []

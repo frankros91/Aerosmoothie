@@ -28,7 +28,6 @@ function App() {
     instrumentalness: 'Instrumentalness',
     liveness: 'Liveness',
     loudness: 'Loudness',
-    speechiness: 'Speechiness',
     valence: 'Valence'
   }
   useEffect(() => {

@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react'
 import Wordcloud from './components/Wordcloud';
 import Radar from './components/Radar';
+import GenrePieChart from './components/GenrePieChart'
 import { useSpotifyImplicitGrant } from './hooks';
 import Spotify from './services/Spotify'
 import Genius from './services/Genius'
@@ -84,6 +85,7 @@ function App() {
         alt="Smoothie"
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
+      {userGenreCounts&& <GenrePieChart data={userGenreCounts}/>}
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
       {featureScores && <Radar captions={features} data={featureScores}/>}

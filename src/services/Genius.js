@@ -66,7 +66,6 @@ class Genius {
 
         const lyrics = await this.scrapeLyrics(searchURL)
         // const song = await getSong(options)
-        debugger
         return lyrics
     }
 

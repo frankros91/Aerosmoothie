@@ -9,6 +9,8 @@ import Genius from './services/Genius'
 function App() {
   const [lyricCounts, setLyricCounts] = useState(null)
   const [featureScores, setFeatureScores] = useState(null)
+  const [tracks, setTracks] = useState(null)
+  const [showWordCloudLoading, setShowWordCloudLoading] = useState(null)
   const accessToken = useSpotifyImplicitGrant()
   const spotify = new Spotify(accessToken)
   const genius = new Genius()
@@ -23,32 +25,33 @@ function App() {
   }
   useEffect( () => {
     spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
-      .then((tracks) => {
-        const track_data = tracks.map(function(track){
-          return {
-            name: track.track.name,
-            artist: track.track.artists.map( a => a.name).join(' ')
-          }
-        })
-        spotify.compileTrackFeatures(tracks)
-        .then((trackFeatures) => {
-          setFeatureScores(trackFeatures)
-          debugger
-        })
-        // return genius.compileTrackLyrics(track_data)
-        // feed name/artist to genius service to get lyrics
-      })
-      .then((lyricCount) => {
-        console.log('back in the view with the count of lyrics')
-        console.log(lyricCount)
-        const formattedLyrics = []
-        for(const lyric in lyricCount) {
-          formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
-        }
-        console.log(formattedLyrics)
-        setLyricCounts(formattedLyrics)
-      })
+    .then(setTracks)
   }, [])
+  useEffect( () => {
+    if (tracks) {
+      // map over tracks to get name/artist
+      const track_data = tracks.map(function(track){
+        return {
+          name: track.track.name,
+          artist: track.track.artists.map( a => a.name).join(' ')
+        }
+      })
+      return genius.compileTrackLyrics(track_data)
+        .then((lyricCount) => {
+          console.log('back in the view with the count of lyrics')
+          console.log(lyricCount)
+          const formattedLyrics = []
+          for(const lyric in lyricCount) {
+            formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
+          }
+          console.log(formattedLyrics)
+          setShowWordCloudLoading(false)
+          setLyricCounts(formattedLyrics)
+        })
+    } else {
+      setShowWordCloudLoading(true)
+    }
+  }, [tracks])
   
   if (!accessToken) return null
   return (
@@ -63,6 +66,7 @@ function App() {
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
+      {showWordCloudLoading && <p>Loading</p>}
       <Radar/>
     </div>
   );

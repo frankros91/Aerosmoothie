@@ -138,7 +138,11 @@ class Spotify {
                 else genreCounts[genreName] = genreCounts[genreName] + 1;
             }
         }
-        return genreCounts
+        let response = []
+        for (let count in genreCounts){
+            response.push({value: count, count: genreCounts[count]})
+        }
+        return response
     }
 }
 

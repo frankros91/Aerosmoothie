@@ -4,6 +4,7 @@ import Wordcloud from './components/Wordcloud';
 import StevenTyler from './components/StevenTyler';
 import Smoothie from './components/Smoothie';
 import Radar from './components/Radar';
+import GenrePieChart from './components/GenrePieChart'
 import { useSpotifyImplicitGrant } from './hooks';
 import Spotify from './services/Spotify'
 import Genius from './services/Genius'
@@ -80,6 +81,7 @@ function App() {
       <h1>Aerosmoothie</h1>
       <StevenTyler />
       <Smoothie />
+      {userGenreCounts && <GenrePieChart data={userGenreCounts}/>}
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
       {featureScores && <Radar captions={features} data={featureScores}/>}

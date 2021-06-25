@@ -6,10 +6,10 @@ import shuffle from 'lodash/shuffle';
 const Wordcloud = ({ data }) => {
     const shuffledData = shuffle(data)
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
         {
             shuffledData.map((obj, index) => 
-                <span key={index} style={{color: randomColor(), fontSize: 2 * obj.count}}>{obj.value}</span>
+                <span key={index} style={{color: randomColor(), fontSize: 1.5 * obj.count}}>{obj.value}</span>
                 )
         }
         </div>

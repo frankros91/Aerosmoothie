@@ -84,18 +84,20 @@ class Genius {
         const totalLyricCount = {}
         for (let data in trackData) {
             const firstResult = await this.getFirstResult(trackData[data])
-            const songUrl = firstResult.result.url
-
-            const res = await gatewayFetch(songUrl, { method: 'GET' })
-            const html = await res.text()
-            const lyrics = await scrapeLyrics(html)
-
-            const lyricArray = lyrics.replace(/\[.+\]/, '').trim().split(/\s/);
-            const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W/, ''))
-            lowerCasedLyricArray.forEach(lyric => {
-                if(!totalLyricCount[lyric]) totalLyricCount[lyric] = 1;
-                else totalLyricCount[lyric] = totalLyricCount[lyric] + 1;
-            }, {})
+            if (firstResult){
+                const songUrl = firstResult.result.url
+    
+                const res = await gatewayFetch(songUrl, { method: 'GET' })
+                const html = await res.text()
+                const lyrics = await scrapeLyrics(html)
+    
+                const lyricArray = lyrics.replace(/\[.+\]/, '').trim().split(/\s/);
+                const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W/, ''))
+                lowerCasedLyricArray.forEach(lyric => {
+                    if(!totalLyricCount[lyric]) totalLyricCount[lyric] = 1;
+                    else totalLyricCount[lyric] = totalLyricCount[lyric] + 1;
+                }, {})
+            }
         }
         return totalLyricCount
     }

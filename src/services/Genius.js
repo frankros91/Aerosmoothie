@@ -95,7 +95,7 @@ class Genius {
                 const lyrics = await scrapeLyrics(html)
     
                 const lyricArray = lyrics.replace(/\[.+\]/, '').trim().split(/\s/);
-                const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W/, ''))
+                const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W+$/, '').replace(/^\W+/, ''))
                 const noStopWordsArray = lowerCasedLyricArray.filter( ( el ) => !stopWords.includes( el ) );
                 noStopWordsArray.forEach(lyric => {
                     if(!totalLyricCount[lyric]) totalLyricCount[lyric] = 1;

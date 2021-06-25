@@ -77,8 +77,11 @@ class Genius {
     }
 
     async scrapeLyrics (url) {
+        const _url = 'https://cors-anywhere.herokuapp.com/' + url
+        console.log('url')
+        console.log(_url)
         const data = await fetch(
-            url,
+            _url,
             {
                 method: 'GET',
                 mode: 'cors',
@@ -89,7 +92,7 @@ class Genius {
                 }
             }
         );
-        debugger
+        
         // const $ = cio.load(data);
         // let lyrics = $('div[class="lyrics"]').text().trim();
         // if (!lyrics) {

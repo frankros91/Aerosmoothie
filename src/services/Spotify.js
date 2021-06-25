@@ -48,18 +48,32 @@ class Spotify {
             }
         )
         const responseData = await response.json()
+        const validFeatures = [
+            'acousticness',
+            'danceability',
+            'energy',
+            'instrumentalness',
+            'liveliness',
+            'loudness',
+            'speechiness',
+            'valence'
+        ]
         let featureList = []
         for (let row in responseData.audio_features){
             let features = {}
             for (let feature in responseData.audio_features[row]){
-                if (responseData.audio_features[row][feature].constructor.name === 'Number') {
-                    if (responseData.audio_features[row][feature] < 0.0){
+                if (validFeatures.includes(feature)) {
+                    if (responseData.audio_features[row][feature] <= 0.0){
                         responseData.audio_features[row][feature] = 0.0
+                    } else if (responseData.audio_features[row][feature] > 1.0){
+                        while (responseData.audio_features[row][feature] > 1.0){
+                            responseData.audio_features[row][feature] /= 10
+                        }
                     }
                     features[feature] = responseData.audio_features[row][feature]
                 }
             }
-            featureList.push({data: features})
+            featureList.push({data: features, meta: {color: 'blue'}})
         }
         return featureList
     }

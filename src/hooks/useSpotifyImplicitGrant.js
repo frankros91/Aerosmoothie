@@ -20,7 +20,7 @@ export const useSpotifyImplicitGrant = () => {
     useEffect(() => {
         if (!accessToken) {
             const scopes = 'user-read-email user-top-read user-read-private'
-            window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&redirect_uri=${PUBLIC_URL}&response_type=token&state=123&scope=${scopes}`
+            window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&redirect_uri=${PUBLIC_URL}&response_type=token&state=123&scope=${scopes}&show_dialog=true`
         }
     }, [accessToken])
     return accessToken

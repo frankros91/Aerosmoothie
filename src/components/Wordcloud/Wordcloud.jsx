@@ -5,11 +5,13 @@ import shuffle from 'lodash/shuffle';
 
 const Wordcloud = ({ data }) => {
     const shuffledData = shuffle(data)
+    const maxCount = data[0].count
+    const scale = 100/maxCount
     return (
         <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
         {
             shuffledData.map((obj, index) => 
-                <span key={index} style={{color: randomColor(), fontSize: 1.5 * obj.count}}>{obj.value}</span>
+                <span key={index} style={{color: randomColor(), fontSize: scale * obj.count}}>{obj.value}</span>
                 )
         }
         </div>

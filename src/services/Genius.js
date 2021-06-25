@@ -1,5 +1,6 @@
-// import { getLyrics, getSong } from 'genius-lyrics-api'
-// const cio = require('cheerio-without-node-native');
+import { gatewayFetch } from './Gateway';
+import { scrapeLyrics } from './Scraper';
+
 const API_KEY = 'NHzsKq6Ci7LFe8lIDxNqtzMgQjQzeLLriWLx89LWhYEFDIYkOPNKAqpPqL9ets6D'
 
 class Genius {
@@ -68,31 +69,46 @@ class Genius {
         return lyrics
     }
 
-    async compileTrackLyrics(trackData) {
-        let lyricCount = {}
-        for (let data in trackData){
-            const lyrics = await this.getTrackLyrics(trackData[data])
-        }
-
+    async getFirstResult(data) {
+        const searchData = this.constructSearchData(data)
+        const extension = `search?q=${searchData}`
+        const searchURL = this.constructURL(extension)
+        const response = await gatewayFetch(searchURL, {
+            method: 'GET'
+        })
+        const searchResult = await response.json()
+        return searchResult.hits[0]
     }
 
-    async scrapeLyrics (url) {
-        const _url = 'https://cors-anywhere.herokuapp.com/' + url
-        console.log('url')
-        console.log(_url)
-        const data = await fetch(
-            _url,
-            {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': this.authKey,
-                    'Access-Control-Allow-Origin': '*'
-                }
-            }
-        );
-        
+    async compileTrackLyrics(trackData) {
+        trackData = [trackData[0]]
+        for (let data in trackData) {
+            const firstResult = await this.getFirstResult(trackData[data])
+            const songUrl = firstResult.result.url
+
+            const res = await gatewayFetch(songUrl, { method: 'GET' })
+            const html = await res.text()
+            const lyrics = await scrapeLyrics(html)
+
+            const lyricArray = lyrics.replace(/\[.+\]/, '').trim().split(/\s/);
+            const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W/, ''))
+            return lowerCasedLyricArray.reduce((accumulator, lyric) => {
+                if(!accumulator[lyric]) accumulator[lyric] = 1;
+                else accumulator[lyric] = accumulator[lyric] + 1;
+                return accumulator;
+            }, {})
+        }
+    }
+
+    // async scrapeLyrics (url) {
+    //     const data = await gatewayFetch(
+    //         url,
+    //         {
+    //             method: 'GET'
+    //         }
+    //     );
+    //     console.log('got the data')
+    //     console.log(data)
         // const $ = cio.load(data);
         // let lyrics = $('div[class="lyrics"]').text().trim();
         // if (!lyrics) {
@@ -108,7 +124,7 @@ class Genius {
         // }
         // if (!lyrics) return null;
         // return lyrics.trim();
-    };
+    // };
 }
 
 export default Genius

@@ -4,8 +4,6 @@ import { TagCloud } from 'react-tagcloud';
 
 
 const Wordcloud = ({ data }) => {
-    // console.log('wordcloud data');
-    // console.log(data)
     return (
         <TagCloud
         minSize={12}

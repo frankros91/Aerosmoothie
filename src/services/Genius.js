@@ -81,7 +81,7 @@ class Genius {
     }
 
     async compileTrackLyrics(trackData) {
-        trackData = [trackData[0]]
+        const totalLyricCount = {}
         for (let data in trackData) {
             const firstResult = await this.getFirstResult(trackData[data])
             const songUrl = firstResult.result.url
@@ -92,12 +92,12 @@ class Genius {
 
             const lyricArray = lyrics.replace(/\[.+\]/, '').trim().split(/\s/);
             const lowerCasedLyricArray = lyricArray.map(lyric => lyric.toLowerCase().replace(/\W/, ''))
-            return lowerCasedLyricArray.reduce((accumulator, lyric) => {
-                if(!accumulator[lyric]) accumulator[lyric] = 1;
-                else accumulator[lyric] = accumulator[lyric] + 1;
-                return accumulator;
+            lowerCasedLyricArray.forEach(lyric => {
+                if(!totalLyricCount[lyric]) totalLyricCount[lyric] = 1;
+                else totalLyricCount[lyric] = totalLyricCount[lyric] + 1;
             }, {})
         }
+        return totalLyricCount
     }
 
     // async scrapeLyrics (url) {

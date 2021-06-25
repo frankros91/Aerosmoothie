@@ -80,9 +80,27 @@ class Spotify {
 
     async compileTrackFeatures(tracks){
         // const tracks = await this.getPlaylistTracks(playlistID)
-        const trackIDs = tracks.map(x => x.track.id)
+        const trackIDs = tracks.map(track => track.id)
         const trackFeatures = await this.getTrackFeatures(trackIDs)
         return trackFeatures
+    }
+
+    async getUserTrackIds() {
+        const url = this.constructURL('me/top/tracks')
+        const result = await fetch(
+            url,
+            {
+                method: 'GET',
+                mode: 'cors',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': this.authKey 
+                }
+            }
+        )
+        const data = await result.json()
+        console.log(data)
+        return data.items
     }
 }
 

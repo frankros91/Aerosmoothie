@@ -1,16 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import randomColor from "randomcolor";
-
+import shuffle from 'lodash/shuffle';
 
 const Wordcloud = ({ data }) => {
-    console.log('wordcloud data');
-    console.log(data)
+    const shuffledData = shuffle(data)
     return (
-        <div>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
         {
-            data.map(obj => 
-                <p style={{color: randomColor(), fontSize: obj.count}}>{obj.value}</p>
+            shuffledData.map((obj, index) => 
+                <span key={index} style={{color: randomColor(), fontSize: 1.5 * obj.count}}>{obj.value}</span>
                 )
         }
         </div>

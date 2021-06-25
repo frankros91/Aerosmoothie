@@ -38,10 +38,18 @@ function App() {
         // return genius.compileTrackLyrics(track_data)
         // feed name/artist to genius service to get lyrics
       })
-      .then( () => {
-        setLyricCounts()
+      .then((lyricCount) => {
+        console.log('back in the view with the count of lyrics')
+        console.log(lyricCount)
+        const formattedLyrics = []
+        for(const lyric in lyricCount) {
+          formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
+        }
+        console.log(formattedLyrics)
+        setLyricCounts(formattedLyrics)
       })
-  }, [featureScores])
+  }, [])
+  
   if (!accessToken) return null
   return (
     <div className="App">

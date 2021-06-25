@@ -1,30 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import randomColor from "randomcolor";
-import { PieChart } from 'react-minimal-pie-chart';
+import { Chart } from "react-google-charts";
 
-const Wordcloud = ({ data }) => {
-    console.log('genrecount is')
-    console.log(data)
-    const formattedData = data.map((obj, index) => ({title: Object.keys(obj)[0], value: Object.values(obj)[0], color: randomColor()}));
-    console.log(formattedData)
+const GenrePieChart = ({ data }) => {
+    const formattedData = data.map((obj) => ([obj.value, obj.count]));
+    const dataWithHeader = [['test', 'header']].concat(formattedData)
+    console.log(dataWithHeader)
     return (
-        <PieChart data={formattedData}></PieChart>
-
+        <Chart
+            width={'500px'}
+            height={'300px'}
+            chartType="PieChart"
+            loader={<div>Loading Chart</div>}
+            data={dataWithHeader}
+            options={{
+                title: 'Songs by Genre',
+            }}
+            rootProps={{ 'data-testid': '1' }}
+        />
     )
 }
-Wordcloud.defaultProps = {
+GenrePieChart.defaultProps = {
     data: [
-        {'JavaScript': 38 },
-        { 'React': 30 },
-        { 'Nodejs': 28 },
-        { 'Express.js': 25 },
-        { 'HTML5': 33 },
-        { 'MongoDB': 18 },
-        { 'CSS3': 20 },
+        { value: 'JavaScript', count: 38 },
+        { value: 'React', count: 30 },
+        { value: 'Nodejs', count: 28 },
+        { value: 'Express.js', count: 25 },
+        { value: 'HTML5', count: 33 },
+        { value: 'MongoDB', count: 18 },
+        { value: 'CSS3', count: 20 },
     ]
 }
-Wordcloud.propTypes = {
+GenrePieChart.propTypes = {
     data: PropTypes.array.isRequired
 }
-export default Wordcloud;
+export default GenrePieChart;

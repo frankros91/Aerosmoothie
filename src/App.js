@@ -85,7 +85,7 @@ function App() {
         alt="Smoothie"
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
-      {userGenreCounts&& <GenrePieChart data={userGenreCounts}/>}
+      <GenrePieChart/>
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
       {featureScores && <Radar captions={features} data={featureScores}/>}

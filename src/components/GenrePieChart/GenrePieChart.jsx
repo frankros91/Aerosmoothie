@@ -5,7 +5,7 @@ import { Chart } from "react-google-charts";
 
 const GenrePieChart = ({ data }) => {
     const formattedData = data.map((obj) => ([obj.value, obj.count]));
-    const dataWithHeader = [['test', 'header']].concat(formattedData)
+    const dataWithHeader = [['Genre', 'Count']].concat(formattedData)
     console.log(dataWithHeader)
     return (
         <Chart

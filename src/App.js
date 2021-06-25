@@ -5,13 +5,16 @@ import Radar from './components/Radar';
 import { useSpotifyImplicitGrant } from './hooks';
 import Spotify from './services/Spotify'
 import Genius from './services/Genius'
+import sortBy from 'lodash/sortBy';
 
 function App() {
   const [lyricCounts, setLyricCounts] = useState(null)
   const [featureScores, setFeatureScores] = useState(null)
   const [tracks, setTracks] = useState(null)
   const [showWordCloudLoading, setShowWordCloudLoading] = useState(null)
+  // const [userTrackIds, setUserTrackIds] = useState(null)
   const accessToken = useSpotifyImplicitGrant()
+
   const spotify = new Spotify(accessToken)
   const genius = new Genius()
   const features = {
@@ -24,16 +27,17 @@ function App() {
     speechiness: 'Speechiness',
     valence: 'Valence'
   }
-  useEffect( () => {
-    spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
-    .then(setTracks)
+  useEffect(() => {
+    spotify.getUserTrackIds()
+      .then(setTracks)
   }, [])
+
   useEffect( () => {
     if (tracks) {
       const track_data = tracks.map(function(track){
         return {
-          name: track.track.name,
-          artist: track.track.artists.map( a => a.name).join(' ')
+          name: track.name,
+          artist: track.artists.map( a => a.name).join(' ')
         }
       })
       return genius.compileTrackLyrics(track_data)
@@ -42,8 +46,11 @@ function App() {
           for(const lyric in lyricCount) {
             if (lyric.length > 3) formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
           }
+          const sortedLyrics = sortBy(formattedLyrics, lyric =>  lyric.count * -1 )
+
+          console.log(sortedLyrics)
           setShowWordCloudLoading(false)
-          setLyricCounts(formattedLyrics)
+          setLyricCounts(sortedLyrics.slice(0, 100))
         })
     } else {
       setShowWordCloudLoading(true)
@@ -56,6 +63,7 @@ function App() {
       .then(setFeatureScores)
     }
   }, [tracks])
+  
   if (!accessToken) return null
   return (
     <div className="App">

@@ -8,26 +8,40 @@ import Genius from './services/Genius'
 
 function App() {
   const [lyricCounts, setLyricCounts] = useState(null)
+  const [featureScores, setFeatureScores] = useState(null)
   const accessToken = useSpotifyImplicitGrant()
   const spotify = new Spotify(accessToken)
   const genius = new Genius()
+  const features = {
+    acousticness: 'acousticness',
+    danceability: 'danceability',
+    energy: 'energy',
+    instrumentalness: 'instrumentalness',
+    liveliness: 'liveliness',
+    loudness: 'loudness',
+    speechiness: 'speechiness'
+  }
   useEffect( () => {
     spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
       .then((tracks) => {
-        // map over tracks to get name/artist
         const track_data = tracks.map(function(track){
           return {
             name: track.track.name,
             artist: track.track.artists.map( a => a.name).join(' ')
           }
         })
-        return genius.compileTrackLyrics(track_data)
+        spotify.compileTrackFeatures(tracks)
+        .then((trackFeatures) => {
+          setFeatureScores(trackFeatures)
+          debugger
+        })
+        // return genius.compileTrackLyrics(track_data)
         // feed name/artist to genius service to get lyrics
       })
       .then( () => {
         setLyricCounts()
       })
-  }, [])
+  }, [featureScores])
   if (!accessToken) return null
   return (
     <div className="App">

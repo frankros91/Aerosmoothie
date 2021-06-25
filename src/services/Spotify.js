@@ -144,7 +144,12 @@ class Spotify {
         for (let count in genreCounts){
             response.push({value: count, count: genreCounts[count]})
         }
-        return response
+        response.sort(function(a,b){ 
+            return b.count- a.count;
+            })
+
+        console.log(response)
+        return response.slice(0,10)
     }
 }
 

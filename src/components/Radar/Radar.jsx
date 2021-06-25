@@ -47,6 +47,6 @@ Radar.defaultProps = {
 }
 Radar.propTypes = {
     data: PropTypes.array.isRequired,
-    captions: PropTypes.array.isRequired
+    captions: PropTypes.object.isRequired
 }
 export default Radar;

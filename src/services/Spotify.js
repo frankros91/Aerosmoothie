@@ -47,14 +47,19 @@ class Spotify {
                 }
             }
         )
-        return response.json()
+        const responseData = await response.json()
+        let featureList = []
+        for (let row in responseData.audio_features){
+            featureList.push({data: responseData.audio_features[row]})
+        }
+        return featureList
     }
 
     async compileTrackFeatures(tracks){
         // const tracks = await this.getPlaylistTracks(playlistID)
         const trackIDs = tracks.map(x => x.track.id)
         const trackFeatures = await this.getTrackFeatures(trackIDs)
-        return trackFeatures.audio_features
+        return trackFeatures
     }
 }
 

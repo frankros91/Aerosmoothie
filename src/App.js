@@ -15,13 +15,13 @@ function App() {
   const spotify = new Spotify(accessToken)
   const genius = new Genius()
   const features = {
-    acousticness: 'acousticness',
-    danceability: 'danceability',
-    energy: 'energy',
-    instrumentalness: 'instrumentalness',
-    liveliness: 'liveliness',
-    loudness: 'loudness',
-    speechiness: 'speechiness'
+    acousticness: 'Acousticness',
+    danceability: 'Danceability',
+    energy: 'Energy',
+    instrumentalness: 'Instrumentalness',
+    liveliness: 'Liveliness',
+    loudness: 'Loudness',
+    speechiness: 'Speechiness'
   }
   useEffect( () => {
     spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
@@ -29,7 +29,6 @@ function App() {
   }, [])
   useEffect( () => {
     if (tracks) {
-      // map over tracks to get name/artist
       const track_data = tracks.map(function(track){
         return {
           name: track.track.name,
@@ -38,13 +37,10 @@ function App() {
       })
       return genius.compileTrackLyrics(track_data)
         .then((lyricCount) => {
-          console.log('back in the view with the count of lyrics')
-          console.log(lyricCount)
           const formattedLyrics = []
           for(const lyric in lyricCount) {
             formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
           }
-          console.log(formattedLyrics)
           setShowWordCloudLoading(false)
           setLyricCounts(formattedLyrics)
         })
@@ -53,6 +49,12 @@ function App() {
     }
   }, [tracks])
   
+  useEffect( () => {
+    if (tracks){
+      spotify.compileTrackFeatures(tracks)
+      .then(setFeatureScores)
+    }
+  }, [tracks])
   if (!accessToken) return null
   return (
     <div className="App">
@@ -67,7 +69,7 @@ function App() {
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
-      <Radar/>
+      {featureScores && <Radar captions={features} data={featureScores}/>}
     </div>
   );
 }

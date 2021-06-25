@@ -76,14 +76,31 @@ function App() {
   
   if (!accessToken) return null
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: '#e3e6e6'}}>
       <h1>Aerosmoothie</h1>
       <StevenTyler />
       <Smoothie />
-      {userGenreCounts && <GenrePieChart data={userGenreCounts}/>}
-      {lyricCounts && <Wordcloud data={lyricCounts}/>}
-      {showWordCloudLoading && <p>Loading</p>}
+      <h2>Top Genres</h2>
+      {userGenreCounts && (
+          <div style={{display: 'flex', justifyContent: 'center' }} >
+            <GenrePieChart data={userGenreCounts} />
+          </div>
+        )
+      }
+      <br></br>
+      <h2>Top Features</h2>
       {featureScores && <Radar captions={features} data={featureScores}/>}
+      <br></br>
+      <h2>Common Song Lyrics</h2>
+      {lyricCounts && (
+        <div style={{display: 'flex', justifyContent: 'center'}} >
+          <div style={{maxWidth: '850px'}}>
+            <Wordcloud data={lyricCounts}/>
+          </div>
+        </div>
+
+      )}
+      {showWordCloudLoading && <p>Loading</p>}
     </div>
   );
 }

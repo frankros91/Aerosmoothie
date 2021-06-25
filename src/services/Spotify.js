@@ -1,3 +1,5 @@
+import randomColor from "randomcolor";
+
 class Spotify {
     constructor(authKey) {
         this.authKey = `Bearer ${authKey}`
@@ -63,9 +65,10 @@ class Spotify {
             let features = {}
             for (let feature in responseData.audio_features[row]){
                 if (validFeatures.includes(feature)) {
-                    if (responseData.audio_features[row][feature] <= 0.0){
-                        responseData.audio_features[row][feature] = 0.0
-                    } else if (responseData.audio_features[row][feature] > 1.0){
+                    if (responseData.audio_features[row][feature] < 0.0){
+                        responseData.audio_features[row][feature] = -responseData.audio_features[row][feature]
+                    }
+                    if (responseData.audio_features[row][feature] > 1.0){
                         while (responseData.audio_features[row][feature] > 1.0){
                             responseData.audio_features[row][feature] /= 10
                         }
@@ -73,7 +76,7 @@ class Spotify {
                     features[feature] = responseData.audio_features[row][feature]
                 }
             }
-            featureList.push({data: features, meta: {color: 'blue'}})
+            featureList.push({data: features, meta: {color: randomColor()}})
         }
         return featureList
     }

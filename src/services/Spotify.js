@@ -10,6 +10,33 @@ class Spotify {
         return `${this.baseURL}/${extension}`
     }
 
+    async getUserPlaylists(){
+        const extenstion = 'me/playlists'
+        const url = this.constructURL(extenstion)
+        const response = await fetch(
+            url,
+            {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.authKey,
+                }
+            }
+        )
+        const responseData = await response.json()
+        let playlists = []
+        for (let playlist in responseData.items){
+            const playlistData = responseData.items[playlist]
+            playlists.push({
+                id: playlistData.id,
+                name: playlistData.name,
+                images: playlistData.images
+            })
+        }
+        return playlists
+    }
+
     async getPlaylistTracks(playlistID) {
         const extension = `playlists/${playlistID}`
         const url = this.constructURL(extension)

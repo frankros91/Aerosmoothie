@@ -50,7 +50,16 @@ class Spotify {
         const responseData = await response.json()
         let featureList = []
         for (let row in responseData.audio_features){
-            featureList.push({data: responseData.audio_features[row]})
+            let features = {}
+            for (let feature in responseData.audio_features[row]){
+                if (responseData.audio_features[row][feature].constructor.name === 'Number') {
+                    if (responseData.audio_features[row][feature] < 0.0){
+                        responseData.audio_features[row][feature] = 0.0
+                    }
+                    features[feature] = responseData.audio_features[row][feature]
+                }
+            }
+            featureList.push({data: features})
         }
         return featureList
     }

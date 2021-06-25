@@ -21,7 +21,8 @@ function App() {
     instrumentalness: 'Instrumentalness',
     liveliness: 'Liveliness',
     loudness: 'Loudness',
-    speechiness: 'Speechiness'
+    speechiness: 'Speechiness',
+    valence: 'Valence'
   }
   useEffect( () => {
     spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
@@ -69,7 +70,7 @@ function App() {
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
-      {featureScores && <Radar captions={features} data={featureScores}/>}
+      {/* {featureScores && <Radar captions={features} data={featureScores}/>} */}
     </div>
   );
 }

@@ -7,7 +7,7 @@ const Wordcloud = ({ data }) => {
     return (
         <TagCloud
         minSize={12}
-        maxSize={35}
+        maxSize={72}
         tags={data}
         onClick={tag => alert(`'${tag.value}' was selected!`)}
       />

@@ -42,7 +42,7 @@ function App() {
           console.log(lyricCount)
           const formattedLyrics = []
           for(const lyric in lyricCount) {
-            formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
+            if (lyric.length > 3) formattedLyrics.push({value: lyric, count: lyricCount[lyric]})
           }
           console.log(formattedLyrics)
           setShowWordCloudLoading(false)

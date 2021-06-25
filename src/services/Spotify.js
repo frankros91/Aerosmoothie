@@ -102,6 +102,44 @@ class Spotify {
         console.log(data)
         return data.items
     }
+
+    async getTracksArtistIDs(tracks) {
+        let artistIDs = new Set
+        for (const track in tracks) {
+            for (const artist in tracks[track].artists) {
+                artistIDs.add(tracks[track].artists[artist].id)
+            }
+        }
+        return artistIDs
+    }
+
+    async getUserGenreCounts(tracks) {
+        const artistIDs = Array.from(await this.getTracksArtistIDs(tracks)).join(',')
+        console.log(artistIDs)
+        const extension = `artists?ids=${artistIDs}`
+        const url = this.constructURL(extension)
+        const result = await fetch(
+            url,
+            {
+                method: 'GET',
+                mode: 'cors',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': this.authKey 
+                }
+            }
+        )
+        const responseData = await result.json()
+        let genreCounts = {}
+        for (const artist in responseData.artists) {
+            for (const genre in responseData.artists[artist].genres){
+                const genreName = responseData.artists[artist].genres[genre]
+                if(!genreCounts[genreName]) genreCounts[genreName] = 1;
+                else genreCounts[genreName] = genreCounts[genreName] + 1;
+            }
+        }
+        return genreCounts
+    }
 }
 
 export default Spotify

@@ -13,6 +13,7 @@ function App() {
   const [tracks, setTracks] = useState(null)
   const [showWordCloudLoading, setShowWordCloudLoading] = useState(null)
   // const [userTrackIds, setUserTrackIds] = useState(null)
+  const [userGenreCounts, setUserGenreCounts] = useState(null)
   const accessToken = useSpotifyImplicitGrant()
 
   const spotify = new Spotify(accessToken)
@@ -61,6 +62,13 @@ function App() {
     if (tracks){
       spotify.compileTrackFeatures(tracks)
       .then(setFeatureScores)
+    }
+  }, [tracks])
+
+  useEffect( () => {
+    if (tracks){
+      spotify.getUserGenreCounts(tracks)
+      .then(setUserGenreCounts)
     }
   }, [tracks])
   

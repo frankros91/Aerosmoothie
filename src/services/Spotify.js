@@ -53,7 +53,7 @@ class Spotify {
             'danceability',
             'energy',
             'instrumentalness',
-            'liveliness',
+            'liveness',
             'loudness',
             'speechiness',
             'valence'

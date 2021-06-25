@@ -22,7 +22,7 @@ function App() {
     danceability: 'Danceability',
     energy: 'Energy',
     instrumentalness: 'Instrumentalness',
-    liveliness: 'Liveliness',
+    liveness: 'Liveness',
     loudness: 'Loudness',
     speechiness: 'Speechiness',
     valence: 'Valence'
@@ -78,7 +78,7 @@ function App() {
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
       {lyricCounts && <Wordcloud data={lyricCounts}/>}
       {showWordCloudLoading && <p>Loading</p>}
-      {/* {featureScores && <Radar captions={features} data={featureScores}/>} */}
+      {featureScores && <Radar captions={features} data={featureScores}/>}
     </div>
   );
 }

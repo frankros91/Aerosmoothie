@@ -1,16 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { TagCloud } from 'react-tagcloud';
-
+import randomColor from "randomcolor";
+import shuffle from 'lodash/shuffle';
 
 const Wordcloud = ({ data }) => {
+    const shuffledData = shuffle(data)
     return (
-        <TagCloud
-        minSize={12}
-        maxSize={35}
-        tags={data}
-        onClick={tag => alert(`'${tag.value}' was selected!`)}
-      />
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+        {
+            shuffledData.map(obj => 
+                <span style={{color: randomColor(), fontSize: 12 * obj.count}}>{obj.value}</span>
+                )
+        }
+        </div>
     )
 }
 Wordcloud.defaultProps = {

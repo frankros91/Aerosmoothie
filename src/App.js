@@ -1,10 +1,33 @@
 import './App.css';
+import { useEffect, useState } from 'react'
 import Wordcloud from './components/Wordcloud';
 import Radar from './components/Radar';
 import { useSpotifyImplicitGrant } from './hooks';
+import Spotify from './services/Spotify'
+import Genius from './services/Genius'
 
 function App() {
+  const [lyricCounts, setLyricCounts] = useState(null)
   const accessToken = useSpotifyImplicitGrant()
+  const spotify = new Spotify(accessToken)
+  const genius = new Genius()
+  useEffect( () => {
+    spotify.getPlaylistTracks('37i9dQZF1DX0XUsuxWHRQd')
+      .then((tracks) => {
+        // map over tracks to get name/artist
+        const track_data = tracks.map(function(track){
+          return {
+            name: track.track.name,
+            artist: track.track.artists.map( a => a.name).join(' ')
+          }
+        })
+        return genius.compileTrackLyrics(track_data)
+        // feed name/artist to genius service to get lyrics
+      })
+      .then( () => {
+        setLyricCounts()
+      })
+  }, [])
   if (!accessToken) return null
   return (
     <div className="App">
@@ -17,7 +40,7 @@ function App() {
         alt="Smoothie"
         style={{ maxHeight: '250px'}}
         src="https://www.wellplated.com/wp-content/uploads/2020/01/Greek-yogurt-smoothie-peanut-butter.jpg" />
-      <Wordcloud/>
+      {lyricCounts && <Wordcloud data={lyricCounts}/>}
       <Radar/>
     </div>
   );

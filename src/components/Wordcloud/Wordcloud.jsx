@@ -8,8 +8,8 @@ const Wordcloud = ({ data }) => {
     return (
         <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
         {
-            shuffledData.map(obj => 
-                <span style={{color: randomColor(), fontSize: 2 * obj.count}}>{obj.value}</span>
+            shuffledData.map((obj, index) => 
+                <span key={index} style={{color: randomColor(), fontSize: 2 * obj.count}}>{obj.value}</span>
                 )
         }
         </div>

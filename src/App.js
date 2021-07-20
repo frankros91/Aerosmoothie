@@ -11,6 +11,7 @@ import Genius from './services/Genius'
 import sortBy from 'lodash/sortBy';
 
 function App() {
+  const [userPlaylists, setUserPlaylists] = useState(null)
   const [lyricCounts, setLyricCounts] = useState(null)
   const [featureScores, setFeatureScores] = useState(null)
   const [tracks, setTracks] = useState(null)
@@ -30,6 +31,11 @@ function App() {
     loudness: 'Loudness',
     valence: 'Valence'
   }
+  useEffect(() => {
+    spotify.getUserPlaylists()
+      .then(setUserPlaylists)
+  }, [])
+
   useEffect(() => {
     spotify.getUserTrackIds()
       .then(setTracks)
